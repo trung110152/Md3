@@ -14,15 +14,67 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="#">Home</a>
-        <a class="nav-link" href="#">List of posts</a>
-        <a class="nav-link" href="#">My profile</a>
-        <a class="nav-link" href="#">Management</a>
-        <a class="nav-link" href="./user/logout.html">Logout</a>
+        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        <a class="nav-link" href="/add">To post</a>
+        <a class="nav-link"  href="./myPosts">My posts</a>
+        <a class="nav-link" href="/myProfile">My profile</a>
+        <a class="nav-link" href="/management">Management</a>
+        <a class="nav-link" href="/user/logout.html">Logout</a>
       </div>
+      <form class="d-flex" role="search" method="post">
+        <input class="form-control me-2"  name="search"  type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
     </div>
   </div>
 </nav>
+<div class="container-fluid" >
+<div class="row">
+  <div class="col-2">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><a href=""><i class="fa-solid fa-paw"></i>1</a></li>
+      <li class="list-group-item"><a href=""><i class="fa-solid fa-paw"></i>2</a></li>
+      <li class="list-group-item"><a href=""><i class="fa-solid fa-paw"></i>3</a></li>
+    </ul>
+  </div>
+  <div class="col-7">
+    <div class="row">
+      <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active" data-bs-interval="10000">
+            <img src="../data/img/no2.png" class="d-block w-100" alt="..." width="100%" height="250px">
+          </div>
+          <div class="carousel-item" data-bs-interval="2000">
+            <img src="../data/img/no1.png" class="d-block w-100" alt="..." width="100%" height="250px">
+          </div>
+          <div class="carousel-item">
+            <img src="../data/img/no3.png" class="d-block w-100" alt="..." width="100%" height="250px">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      {posts}
+    </div>
+  </div>
+  <div class="col-3">
+<!--    <img src="img3.png" alt="" width="100%">-->
+  </div>
+</div>
+</div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </html>
