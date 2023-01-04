@@ -5,8 +5,11 @@ const router = {
     'myPosts': homeHandleRouter.showMyPosts,
     'myProfile': memberHandleRouter.showMyProfile,
     'add': homeHandleRouter.addPost,
+    'addMember': memberHandleRouter.addMember,
     'delete': homeHandleRouter.deletePost,
+    'deleteMember': memberHandleRouter.deleteMember,
     'edit': homeHandleRouter.editPost,
-    'login': memberHandleRouter.login
+    'login': memberHandleRouter.login,
+    'management': memberHandleRouter.showMember
 }
 module.exports = router

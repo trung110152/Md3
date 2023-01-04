@@ -44,8 +44,7 @@ class HomeHandleRouter {
                     res.end();
                 }
             })
-        }
-        else {                          // Search bằng tên gần đúng
+        } else {                          // Search bằng tên gần đúng
             let data = '';
             req.on('data', chunk => {
                 data += chunk;
@@ -105,7 +104,6 @@ class HomeHandleRouter {
             }
         })
     }
-
 
 
     addPost(req, res) {

@@ -45,6 +45,8 @@ class MemberHandleRouter {
         }
     }
 
+
+
     showMyProfile(req, res){
         const cookies = cookie.parse(req.headers.cookie || '');
         let userCurrent = JSON.parse(cookies.name);
@@ -76,6 +78,90 @@ class MemberHandleRouter {
             }
         })
     }
+
+    showMember(req,res){
+        const cookies = cookie.parse(req.headers.cookie || '');
+        let userCurrent = JSON.parse(cookies.name);
+        fs.readFile('./views/management.html', "utf-8", async (err, managementHtml) => {
+            if (err) {
+                console.log(err)
+            } else if(userCurrent.role === "admin") {
+                let member = await memberService.findMember();
+                let tbody = '';
+                member.map((member, index) => {
+                    tbody += `
+                    <tr>
+                        <td>${index}</td>
+                        <td>${member.accountName}</td>
+                        <td>${member.password}</td>
+                        <td>${member.role}</td>
+                        <td><a href="/deleteMember/${member.idMember}"><button style="background-color: red; color: white">Delete</button></a></td>
+                    </tr>
+                       `
+                })
+                managementHtml = managementHtml.replace('{member}', tbody);
+                res.writeHead(200, {'location': '/management'});
+                res.write(managementHtml);
+                res.end();
+            } else{
+                res.writeHead(200, {'location': '/home'});
+                res.end();
+            }
+        })
+    }
+
+
+    addMember(req, res) {
+        if (req.method === 'GET') {
+            fs.readFile('./views/addMember.html', 'utf-8', async (err, addMemberHtml) => {
+                if (err) {
+                    console.log(err.message)
+                } else {
+                    res.writeHead(200, 'text/html');
+                    res.write(addMemberHtml);
+                    res.end();
+                }
+            })
+        } else {
+            let data = '';
+            req.on('data', chunk => {
+                data += chunk;
+            })
+            req.on('end', async err => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    const member = qs.parse(data);
+                    await memberService.saveMember(member);
+                    res.writeHead(301, {'location': '/home'});
+                    res.end();
+                }
+            })
+        }
+    }
+
+
+    async deleteMember(req, res, idMember) {
+        if (req.method === 'GET') {
+            fs.readFile('./views/deleteMember.html', 'utf-8', (err, deleteMemberHtml) => {
+                if (err) {
+                    console.log(err.message)
+                } else {
+                    res.writeHead(200, 'text/html');
+                    deleteMemberHtml = deleteMemberHtml.replace('{idMember}', idMember);
+                    // console.log(idMember+'dddddd')
+                    res.write(deleteMemberHtml);
+                    res.end();
+                }
+            })
+        } else {
+            await memberService.removeMember(idMember);
+            res.writeHead(301, {'location': '/management'});
+            res.end();
+        }
+    }
 }
+
+
 
 module.exports = new MemberHandleRouter();
