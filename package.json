@@ -2,6 +2,7 @@
   "name": "MyBlog",
   "version": "1.0.0",
   "dependencies": {
+    "alert": "^5.1.4",
     "cookie": "^0.5.0",
     "mysql": "^2.18.1",
     "qs": "^6.11.0"

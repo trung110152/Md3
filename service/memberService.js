@@ -28,18 +28,37 @@ class MemberService {
         })
     }
 
-    saveMember(member) {
+     checkAccountName(accountName){
         let connect = connection.getConnection();
         return new Promise((resolve, reject) => {
-            connect.query(`insert into member (accountName, password,  role)
-                           values ('${member.accountName}', '${member.password}', 'member')`, (err) => {
+            connect.query(`select * from member where member.accountName = '${accountName}'`, (err,data) => {
                 if (err) {
                     reject(err)
                 } else {
-                    resolve('Create success')
+                    resolve(data)
                 }
             })
         })
+    }
+
+   async saveMember(member) {
+        let connect = connection.getConnection();
+        let checkAccountName = await this.checkAccountName(member.accountName);
+        if (checkAccountName.length !== 0){
+            return 'loi'
+        } else {
+            return new Promise((resolve, reject) => {
+                connect.query(`insert into member (accountName, password,  role)
+                           values ('${member.accountName}', '${member.password}', 'member')`, (err) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve('Create success')
+                    }
+                })
+            })
+        }
+
     }
 
 

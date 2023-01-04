@@ -3,6 +3,7 @@ const qs = require("qs");
 const memberService = require('../../service/memberService')
 const cookie = require("cookie");
 const postService = require("../../service/postService");
+const alert = require("alert")
 
 class MemberHandleRouter {
     login(req, res) {
@@ -22,32 +23,29 @@ class MemberHandleRouter {
                 data += chunk
             })
             req.on('end', async (err) => {
-                if(err) {
+                if (err) {
                     console.log(err)
                 }
                 let member = qs.parse(data)
                 let listMember = await memberService.login(member);
-                if(listMember.length !== 0){
+                if (listMember.length !== 0) {
                     res.setHeader('Set-Cookie', cookie.serialize('name', JSON.stringify(listMember[0]), {
                         httpOnly: true,
-                        maxAge: 60 * 60 * 24 * 7 * 365 // 1 year
+                        maxAge: 60 * 60 * 24 * 7 * 52 // 1 year
                     }));
                     // console.log(listMember[0].idMember)
-                    res.writeHead(301, {'location' : '/home'});
+                    res.writeHead(301, {'location': '/home'});
                     res.end();
                 } else {
-                    res.writeHead(301, {'location' : '/login'});
+                    res.writeHead(301, {'location': '/login'});
                     res.end();
                 }
-
-
             })
         }
     }
 
 
-
-    showMyProfile(req, res){
+    showMyProfile(req, res) {
         const cookies = cookie.parse(req.headers.cookie || '');
         let userCurrent = JSON.parse(cookies.name);
         fs.readFile('./views/myProfile.html', "utf-8", async (err, myProfileHtml) => {
@@ -56,7 +54,7 @@ class MemberHandleRouter {
             } else {
                 let tbody = '';
 
-                    tbody += `
+                tbody += `
                         <p1>id: </p1>
                         <p2>${userCurrent.idMember}</p2>
                         <br>
@@ -79,13 +77,13 @@ class MemberHandleRouter {
         })
     }
 
-    showMember(req,res){
+    showMember(req, res) {
         const cookies = cookie.parse(req.headers.cookie || '');
         let userCurrent = JSON.parse(cookies.name);
         fs.readFile('./views/management.html', "utf-8", async (err, managementHtml) => {
             if (err) {
                 console.log(err)
-            } else if(userCurrent.role === "admin") {
+            } else if (userCurrent.role === "admin") {
                 let member = await memberService.findMember();
                 let tbody = '';
                 member.map((member, index) => {
@@ -103,7 +101,7 @@ class MemberHandleRouter {
                 res.writeHead(200, {'location': '/management'});
                 res.write(managementHtml);
                 res.end();
-            } else{
+            } else {
                 res.writeHead(200, {'location': '/home'});
                 res.end();
             }
@@ -132,9 +130,14 @@ class MemberHandleRouter {
                     console.log(err)
                 } else {
                     const member = qs.parse(data);
-                    await memberService.saveMember(member);
-                    res.writeHead(301, {'location': '/home'});
-                    res.end();
+                    let save= await memberService.saveMember(member);
+                    if (save === "loi"){
+                        res.writeHead(301, {'location': '/addMember'});
+                        alert('Lỗi quá em ới!!')
+                        res.end();
+                    }else{
+                        res.writeHead(301, {'location': '/home'});
+                        res.end();}
                 }
             })
         }
@@ -161,7 +164,6 @@ class MemberHandleRouter {
         }
     }
 }
-
 
 
 module.exports = new MemberHandleRouter();
