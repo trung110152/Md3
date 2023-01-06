@@ -3,7 +3,7 @@ const qs = require("qs");
 const memberService = require('../../service/memberService')
 const cookie = require("cookie");
 const postService = require("../../service/postService");
-const alert = require("alert")
+
 
 class MemberHandleRouter {
     login(req, res) {
@@ -55,18 +55,14 @@ class MemberHandleRouter {
                 let tbody = '';
 
                 tbody += `
-                        <p1>id: </p1>
-                        <p2>${userCurrent.idMember}</p2>
-                        <br>
-                        <p1>Account Name: </p1>
-                         <p2>${userCurrent.accountName}</p2>
-                         <br>
-                         <p1>Password: </p1>
-                         <p2>${userCurrent.password}</p2>
-                         <br>
-                         <p1>Role: </p1>
-                         <p2>${userCurrent.role}</p2>
+                        <tr>
+                        <td>${userCurrent.idMember}</td>
+                        <td>${userCurrent.accountName}</td>
+                        <td>${userCurrent.password}</td>
+                        <td>${userCurrent.role}</td>
+                        <td><a href="/editMember/${userCurrent.idMember}"><button style="background-color: red; color: white">Thay đổi</button></a></td>
                     </tr>
+                    
                        `
 
                 myProfileHtml = myProfileHtml.replace('{myProfile}', tbody);
@@ -161,6 +157,43 @@ class MemberHandleRouter {
             await memberService.removeMember(idMember);
             res.writeHead(301, {'location': '/management'});
             res.end();
+        }
+    }
+
+    async editMember(req, res, idMember) {
+        const cookies = cookie.parse(req.headers.cookie || '');
+        let userCurrent = JSON.parse(cookies.name);
+        if (req.method === 'GET') {
+            fs.readFile('./views/editMember.html', 'utf-8', async (err, editMemberHtml) => {
+                if (err) {
+                    console.log(err.message)
+                } else {
+                    console.log(userCurrent.idMember)
+                    editMemberHtml = editMemberHtml.replace('{idMember}', userCurrent.idMember);
+                    editMemberHtml = editMemberHtml.replace('{accountName}', userCurrent.accountName);
+                    editMemberHtml = editMemberHtml.replace('{password}', userCurrent.password)
+                    editMemberHtml = editMemberHtml.replace('{role}', userCurrent.role);
+                    res.writeHead(200, 'text/html');
+                    res.write(editMemberHtml);
+                    res.end();
+                }
+            })
+        } else {
+            let data = '';
+            req.on('data', chunk => {
+                data += chunk;
+            })
+            req.on('end', async err => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    const member = qs.parse(data);
+                    // console.log(idMember);
+                    await memberService.editMember(member);
+                    res.writeHead(301, {'location': '/login'});
+                    res.end();
+                }
+            })
         }
     }
 }

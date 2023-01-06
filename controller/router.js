@@ -9,6 +9,7 @@ const router = {
     'delete': homeHandleRouter.deletePost,
     'deleteMember': memberHandleRouter.deleteMember,
     'edit': homeHandleRouter.editPost,
+    'editMember': memberHandleRouter.editMember,
     'login': memberHandleRouter.login,
     'management': memberHandleRouter.showMember
 }

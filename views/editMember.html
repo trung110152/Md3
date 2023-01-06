@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">여친</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link " aria-current="page" href="/home">Trang chủ</a>
+        <a class="nav-link " href="/add">Đăng tin</a>
+        <a class="nav-link  " href="/myPosts/{idMember}">Danh sách tin</a>
+        <a class="nav-link active" href="/myProfile/{idMember}">Thông tin</a>
+        <a class="nav-link" href="/management/{idMember}">Quản lý</a>
+        <a class="nav-link" href="/login">Đăng xuất</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<form action="/editMember/{idMember}" method="post">
+  <input type="text" name="idMember" placeholder="ID member" value="{idMember}">
+  <input type="text" name="accountName" placeholder="Account name" value="{accountName}">
+  <input type="text" name="password" placeholder="Password" value="{password}">
+  <input type="text" name="role" placeholder="Role" value="{role}">
+  <button type="submit" style="background-color: green">Sửa</button>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+</html>

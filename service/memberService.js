@@ -77,5 +77,24 @@ class MemberService {
             })
         })
     }
+
+    editMember(member) {
+        let connect = connection.getConnection();
+        return new Promise((resolve, reject) => {
+            connect.query(`update member
+                           set idMember      = ${member.idMember},
+                               accountName    = '${member.accountName}',
+                               password   = '${member.password}',
+                               role = '${member.role}'
+                           where idMember = ${member.idMember}; `, (err, members) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    console.log('Success');
+                    resolve(members);
+                }
+            })
+        })
+    }
 }
 module.exports = new MemberService();
